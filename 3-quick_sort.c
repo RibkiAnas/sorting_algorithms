@@ -1,6 +1,5 @@
 #include "sort.h"
 
-#define MAX_SIZE 1000
 /**
  * swap - Swaps the values of two integers.
  * @a: Pointer to the first integer.
@@ -45,6 +44,31 @@ int partition(int *array, int low, int high, size_t size)
 }
 
 /**
+ * quicksort - Sorts an array of integers in
+ * ascending order using
+ * the Quick sort algorithm and the Lomuto
+ * partition scheme.
+ * @array: Pointer to the first element of
+ * the array to sort.
+ * @low: The lowest index of the partition to
+ * sort.
+ * @high: The highest index of the partition
+ * to sort.
+ * @size: The size of the array.
+ */
+void quicksort(int *array, int low, int high, size_t size)
+{
+	int pi;
+
+	if (high - low > 0)
+	{
+		pi = partition(array, low, high, size);
+		quicksort(array, low, pi - 1, size);
+		quicksort(array, pi + 1, high, size);
+	}
+}
+
+/**
 * quick_sort - function that sorts an array
 * of integers in ascending order using the
 * Quick sort algorithm.
@@ -53,29 +77,5 @@ int partition(int *array, int low, int high, size_t size)
 */
 void quick_sort(int *array, size_t size)
 {
-	int stack[MAX_SIZE];
-	int top = -1;
-	int high, low, pi;
-
-	stack[++top] = 0;
-	stack[++top] = size - 1;
-
-	while (top >= 0)
-	{
-		high = stack[top--];
-		low = stack[top--];
-		pi = partition(array, low, high, size);
-
-		if (pi - 1 > low)
-		{
-			stack[++top] = low;
-			stack[++top] = pi - 1;
-		}
-
-		if (pi + 1 < high)
-		{
-			stack[++top] = pi + 1;
-			stack[++top] = high;
-		}
-	}
+	quicksort(array, 0, size - 1, size);
 }
